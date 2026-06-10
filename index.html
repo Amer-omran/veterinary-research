@@ -352,6 +352,7 @@ let autoInterval = null, autoTimer = null, autoSec = 0;
 let currentResults = [];
 let activeFilters = ['influenza','rabies','FMD','coronavirus','parvovirus'];
 let allJournals = new Set();
+let lastStatusState = 'ready';
 
 const T = {
   ar: {
@@ -469,7 +470,8 @@ function applyLang() {
   document.getElementById('searchInput').placeholder    = t.placeholder;
   document.getElementById('searchInput').style.direction = isAr ? 'rtl' : 'ltr';
   document.getElementById('timerPill').textContent      = autoInterval ? document.getElementById('timerPill').textContent : t.autoOff;
-  document.getElementById('statusText').textContent     = t.statusReady;
+  const statusMap = { ready: t.statusReady, auto: t.autoActive, stopped: t.autoStopped };
+  document.getElementById('statusText').textContent     = statusMap[lastStatusState] || t.statusReady;
   document.getElementById('empty-msg').textContent      = t.emptyStart;
   document.getElementById('footer-text').textContent    = t.footer;
   document.querySelectorAll('.ftag').forEach(btn => {
@@ -529,8 +531,9 @@ async function doSearch() {
       .filter(r => r.uid)
       .map(r => ({
         id:          r.uid,
-        title:       r.title || (lang === 'ar' ? 'بدون عنوان' : 'No title'),
-        authors:     (r.authors||[]).slice(0,3).map(a=>a.name).join(', ') + ((r.authors||[]).length>3 ? t.andOthers : ''),
+        title:       r.title || '—',
+        authorsBase: (r.authors||[]).slice(0,3).map(a=>a.name).join(', '),
+        authorsMore: (r.authors||[]).length > 3,
         journal:     r.fulljournalname || r.source || '',
         year:        (r.pubdate||'').split(' ')[0],
         pubdate:     r.pubdate || '',
@@ -575,6 +578,7 @@ function renderResults() {
     const isCase   = r.articleType.some(x => /case/i.test(x));
     const typeLabel = isReview ? t.badgeReview : isCase ? t.badgeCase : t.badgeOrig;
     const jShort   = r.journal.length > 40 ? r.journal.slice(0,40)+'…' : r.journal;
+    const authors  = r.authorsBase + (r.authorsMore ? t.andOthers : '');
     const pmUrl    = `https://pubmed.ncbi.nlm.nih.gov/${r.pmid}/`;
     const schUrl   = `https://scholar.google.com/scholar?q=${encodeURIComponent(r.title)}`;
     return `
@@ -587,7 +591,7 @@ function renderResults() {
         ${r.openAccess ? `<span class="badge b-oa">${t.badgeOA}</span>` : ''}
       </div>
       <div class="article-title" onclick="window.open('${pmUrl}','_blank')">${r.title}</div>
-      ${r.authors ? `<div class="article-authors"><i class="ti ti-users" style="font-size:12px;vertical-align:-1px" aria-hidden="true"></i> ${r.authors}</div>` : ''}
+      ${authors ? `<div class="article-authors"><i class="ti ti-users" style="font-size:12px;vertical-align:-1px" aria-hidden="true"></i> ${authors}</div>` : ''}
       <div class="article-footer">
         <div class="article-actions">
           <button class="btn-sm green" onclick="window.open('${pmUrl}','_blank')">
@@ -632,11 +636,13 @@ function toggleAuto() {
     autoInterval = autoTimer = null;
     btn.classList.remove('active');
     document.getElementById('timerPill').textContent = T[lang].autoOff;
+    lastStatusState = 'stopped';
     setStatus(T[lang].autoStopped, false, false);
   } else {
     const SEC = 300;
     autoSec = SEC;
     btn.classList.add('active');
+    lastStatusState = 'auto';
     doSearch();
     autoInterval = setInterval(() => { autoSec = SEC; doSearch(); }, SEC * 1000);
     autoTimer    = setInterval(() => {
