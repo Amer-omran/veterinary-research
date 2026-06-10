@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>منصة أبحاث الفيروسات البيطرية</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/tabler-icons.min.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+    background: #f5f5f0;
+    color: #1a1a1a;
+    direction: rtl;
+    min-height: 100vh;
+  }
+  a { color: inherit; text-decoration: none; }
+  .topbar {
+    background: #085041;
+    color: white;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .topbar i { font-size: 24px; }
+  .topbar-title { font-size: 18px; font-weight: 600; }
+  .topbar-sub { font-size: 12px; opacity: 0.8; margin-top: 1px; }
+  .topbar-spacer { flex: 1; }
+  .topbar-badge {
+    background: rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .live-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #5DCAA5;
+    display: inline-block;
+  }
+  .live-dot.pulse { animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .stat-card {
+    background: white;
+    border-radius: 10px;
+    border: 1px solid #e5e5e0;
+    padding: 14px;
+    text-align: center;
+  }
+  .stat-num { font-size: 26px; font-weight: 600; color: #085041; }
+  .stat-label { font-size: 12px; color: #666; margin-top: 3px; }
+
+  .search-box {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #e5e5e0;
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+  .search-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+  .search-row input {
+    flex: 1; min-width: 200px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 14px;
+    font-family: inherit;
+    direction: rtl;
+    outline: none;
+  }
+  .search-row input:focus { border-color: #0F6E56; box-shadow: 0 0 0 3px rgba(15,110,86,0.1); }
+  .search-row select {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 9px 10px;
+    font-size: 13px;
+    font-family: inherit;
+    background: white;
+    cursor: pointer;
+    outline: none;
+  }
+  .btn-search {
+    background: #085041;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 9px 20px;
+    font-size: 14px;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+  .btn-search:hover { background: #0F6E56; }
+  .btn-auto {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 9px 14px;
+    font-size: 13px;
+    font-family: inherit;
+    background: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    color: #444;
+  }
+  .btn-auto.active { background: #E1F5EE; border-color: #5DCAA5; color: #085041; }
+  .btn-auto.active i { color: #0F6E56; }
+
+  .filters-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .filter-label { font-size: 12px; color: #888; }
+  .ftag {
+    font-size: 12px;
+    padding: 5px 11px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    color: #555;
+    background: #fafafa;
+    transition: all 0.15s;
+  }
+  .ftag.active { background: #E1F5EE; border-color: #5DCAA5; color: #085041; font-weight: 500; }
+  .ftag:hover { border-color: #aaa; }
+
+  .status-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    border-radius: 8px;
+    background: white;
+    border: 1px solid #e5e5e0;
+    margin-bottom: 14px;
+    font-size: 13px;
+    color: #666;
+  }
+  .spinner {
+    width: 14px; height: 14px;
+    border: 2px solid #ddd;
+    border-top-color: #0F6E56;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .results-header span { font-size: 13px; color: #666; }
+  .sort-sel {
+    font-size: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 5px 10px;
+    background: white;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .article-card {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #e8e8e3;
+    padding: 16px 18px;
+    margin-bottom: 10px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .article-card:hover { border-color: #a8d5c4; box-shadow: 0 2px 8px rgba(8,80,65,0.07); }
+  .article-meta { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
+  .badge {
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+  .b-type { background: #E1F5EE; color: #085041; }
+  .b-journal { background: #E6F1FB; color: #0C447C; }
+  .b-year { background: #f0efe8; color: #444; }
+  .b-new { background: #EAF3DE; color: #27500A; }
+  .b-oa { background: #FAEEDA; color: #633806; }
+  .article-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #0a0a0a;
+    margin-bottom: 6px;
+    line-height: 1.5;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+  .article-title:hover { color: #085041; }
+  .article-authors { font-size: 12px; color: #777; margin-bottom: 6px; }
+  .article-abstract {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .article-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid #f0efe8;
+  }
+  .article-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+  .btn-sm {
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    padding: 5px 11px;
+    font-size: 12px;
+    cursor: pointer;
+    background: white;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  .btn-sm:hover { border-color: #bbb; color: #222; }
+  .btn-sm.green { color: #085041; border-color: #5DCAA5; }
+  .btn-sm.green:hover { background: #E1F5EE; }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #aaa;
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #e8e8e3;
+  }
+  .empty-state i { font-size: 48px; margin-bottom: 14px; display: block; }
+
+  .timer-pill {
+    background: rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 2px 8px;
+    font-size: 11px;
+  }
+
+  footer {
+    text-align: center;
+    padding: 20px;
+    color: #aaa;
+    font-size: 12px;
+    margin-top: 20px;
+  }
+
+  @media (max-width: 600px) {
+    .stats-grid { grid-template-columns: repeat(2,1fr); }
+    .topbar-title { font-size: 15px; }
+    .search-row input { min-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <i class="ti ti-virus" aria-hidden="true"></i>
+  <div>
+    <div class="topbar-title">منصة أبحاث الفيروسات البيطرية</div>
+    <div class="topbar-sub">بحث تلقائي · PubMed · NCBI</div>
+  </div>
+  <div class="topbar-spacer"></div>
+  <div class="topbar-badge">
+    <span class="live-dot" id="liveDot"></span>
+    <span id="liveLabel">جاهز</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-num" id="stat-total">—</div>
+      <div class="stat-label">إجمالي الأبحاث</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="stat-new">—</div>
+      <div class="stat-label">جديد هذا الأسبوع</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="stat-journals">—</div>
+      <div class="stat-label">مجلة علمية</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="stat-last">—</div>
+      <div class="stat-label">آخر تحديث</div>
+    </div>
+  </div>
+
+  <div class="search-box">
+    <div class="search-row">
+      <input type="text" id="searchInput" placeholder="ابحث: influenza، rabies، FMD، coronavirus..." value="veterinary virology" />
+      <select id="yearFilter">
+        <option value="all">كل السنوات</option>
+        <option value="2026" selected>2026</option>
+        <option value="2025">2025</option>
+        <option value="2024">2024</option>
+        <option value="2023">2023</option>
+        <option value="2022">2022</option>
+      </select>
+      <select id="typeFilter">
+        <option value="all">كل الأنواع</option>
+        <option value="review">مراجعة علمية</option>
+        <option value="research">بحث أصلي</option>
+        <option value="case">تقرير حالة</option>
+      </select>
+      <button class="btn-search" onclick="doSearch()">
+        <i class="ti ti-search" aria-hidden="true"></i> بحث
+      </button>
+      <button class="btn-auto" id="autoBtn" onclick="toggleAuto()">
+        <i class="ti ti-refresh" aria-hidden="true"></i>
+        تلقائي
+        <span class="timer-pill" id="timerPill">إيقاف</span>
+      </button>
+    </div>
+    <div class="filters-row">
+      <span class="filter-label">تصفية:</span>
+      <button class="ftag active" onclick="toggleFilter(this,'influenza')">أنفلونزا</button>
+      <button class="ftag active" onclick="toggleFilter(this,'rabies')">داء الكلب</button>
+      <button class="ftag active" onclick="toggleFilter(this,'FMD')">الحمى القلاعية</button>
+      <button class="ftag active" onclick="toggleFilter(this,'coronavirus')">كورونا حيوانات</button>
+      <button class="ftag active" onclick="toggleFilter(this,'parvovirus')">بارفوفيروس</button>
+      <button class="ftag" onclick="toggleFilter(this,'herpesvirus')">هيربس فيروس</button>
+      <button class="ftag" onclick="toggleFilter(this,'Newcastle')">نيوكاسل</button>
+      <button class="ftag" onclick="toggleFilter(this,'BVD')">BVD</button>
+      <button class="ftag" onclick="toggleFilter(this,'ASF')">حمى الخنازير الأفريقية</button>
+      <button class="ftag" onclick="toggleFilter(this,'avian')">إنفلونزا الطيور</button>
+      <button class="ftag" onclick="toggleFilter(this,'distemper')">كلبة الحيوانات</button>
+    </div>
+  </div>
+
+  <div class="status-bar">
+    <div class="live-dot" id="statusDot"></div>
+    <span id="statusText">جاهز — اضغط بحث أو فعّل التحديث التلقائي</span>
+    <div id="spinner" style="display:none" class="spinner"></div>
+  </div>
+
+  <div class="results-header">
+    <span id="resultsCount">—</span>
+    <select class="sort-sel" id="sortSel" onchange="renderResults()">
+      <option value="date">الأحدث أولاً</option>
+      <option value="relevance">الأكثر صلة</option>
+    </select>
+  </div>
+
+  <div id="resultsList">
+    <div class="empty-state">
+      <i class="ti ti-microscope" aria-hidden="true"></i>
+      <p style="font-size:16px;color:#888;">ابدأ البحث للاطلاع على أحدث الأبحاث البيطرية</p>
+    </div>
+  </div>
+
+  <footer>
+    منصة أبحاث الفيروسات البيطرية · مصدر البيانات: PubMed / NCBI · مجاني ومفتوح المصدر
+  </footer>
+
+</div>
+
+<script>
+const PUBMED = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/';
+let autoInterval = null, autoTimer = null, autoSec = 0;
+let currentResults = [];
+let activeFilters = ['influenza','rabies','FMD','coronavirus','parvovirus'];
+let allJournals = new Set();
+
+const topics = {
+  influenza:   'influenza virus veterinary',
+  rabies:      'rabies virus animals',
+  FMD:         'foot and mouth disease virus',
+  coronavirus: 'coronavirus animals bovine feline canine',
+  parvovirus:  'parvovirus veterinary',
+  herpesvirus: 'herpesvirus veterinary bovine equine',
+  Newcastle:   'Newcastle disease virus poultry',
+  BVD:         'bovine viral diarrhea virus',
+  ASF:         'African swine fever virus',
+  avian:       'avian influenza H5N1 H5N8 poultry',
+  distemper:   'canine distemper virus feline'
+};
+
+function toggleFilter(el, tag) {
+  el.classList.toggle('active');
+  if (activeFilters.includes(tag)) activeFilters = activeFilters.filter(f => f !== tag);
+  else activeFilters.push(tag);
+}
+
+function buildQuery() {
+  const base = document.getElementById('searchInput').value.trim() || 'veterinary virology';
+  const year = document.getElementById('yearFilter').value;
+  const type = document.getElementById('typeFilter').value;
+  let q = `(${base})[Title/Abstract] AND (veterinary[MeSH Terms] OR veterinary[Title/Abstract] OR animal disease[MeSH Terms])`;
+  if (activeFilters.length > 0) {
+    q += ' AND (' + activeFilters.map(f => `(${topics[f]||f})`).join(' OR ') + ')';
+  }
+  if (year !== 'all') q += ` AND ${year}[PDAT]`;
+  if (type === 'review')    q += ' AND Review[PT]';
+  if (type === 'research')  q += ' AND Journal Article[PT] NOT Review[PT]';
+  if (type === 'case')      q += ' AND Case Reports[PT]';
+  return q;
+}
+
+async function doSearch() {
+  setStatus('جارٍ البحث في PubMed…', true, true);
+  try {
+    const q = buildQuery();
+    const sRes = await fetch(`${PUBMED}esearch.fcgi?db=pubmed&term=${encodeURIComponent(q)}&retmax=30&sort=date&retmode=json`);
+    const sJson = await sRes.json();
+    const ids = sJson.esearchresult?.idlist || [];
+    if (ids.length === 0) {
+      currentResults = [];
+      renderResults();
+      setStatus('لا توجد نتائج لهذا البحث', false, false);
+      return;
+    }
+    const fRes = await fetch(`${PUBMED}esummary.fcgi?db=pubmed&id=${ids.join(',')}&retmode=json`);
+    const fJson = await fRes.json();
+    currentResults = Object.values(fJson.result || {})
+      .filter(r => r.uid)
+      .map(r => ({
+        id:       r.uid,
+        title:    r.title || 'بدون عنوان',
+        authors:  (r.authors||[]).slice(0,3).map(a=>a.name).join(', ') + ((r.authors||[]).length>3?' وآخرون':''),
+        journal:  r.fulljournalname || r.source || '',
+        year:     (r.pubdate||'').split(' ')[0],
+        pubdate:  r.pubdate || '',
+        openAccess: !!(r.attributes && r.attributes.includes('free full text')),
+        articleType: r.pubtype || [],
+        pmid:     r.uid
+      }));
+    allJournals = new Set([...allJournals, ...currentResults.map(r=>r.journal).filter(Boolean)]);
+    const newCount = currentResults.filter(r => {
+      if (!r.pubdate) return false;
+      return (Date.now() - new Date(r.pubdate)) < 14*24*3600*1000;
+    }).length;
+    document.getElementById('stat-total').textContent   = currentResults.length;
+    document.getElementById('stat-new').textContent     = newCount;
+    document.getElementById('stat-journals').textContent = allJournals.size;
+    document.getElementById('stat-last').textContent    = new Date().toLocaleTimeString('ar',{hour:'2-digit',minute:'2-digit'});
+    renderResults();
+    setStatus(`تم العثور على ${currentResults.length} بحث — آخر تحديث: ${new Date().toLocaleTimeString('ar')}`, false, true);
+  } catch(e) {
+    setStatus('خطأ في الاتصال — تأكد من الإنترنت وأعد المحاولة', false, false);
+    document.getElementById('resultsList').innerHTML = `
+      <div class="empty-state">
+        <i class="ti ti-wifi-off" aria-hidden="true"></i>
+        <p>تعذّر الاتصال بقاعدة بيانات PubMed</p>
+        <p style="font-size:12px;margin-top:8px;color:#bbb;">تأكد من الاتصال بالإنترنت ثم أعد المحاولة</p>
+      </div>`;
+  }
+}
+
+function renderResults() {
+  const list = document.getElementById('resultsList');
+  if (!currentResults.length) {
+    list.innerHTML = `<div class="empty-state"><i class="ti ti-file-search" aria-hidden="true"></i><p>لا توجد نتائج — جرّب كلمات بحث مختلفة</p></div>`;
+    document.getElementById('resultsCount').textContent = 'لا توجد نتائج';
+    return;
+  }
+  const sort = document.getElementById('sortSel').value;
+  let res = [...currentResults];
+  if (sort === 'date') res.sort((a,b) => new Date(b.pubdate||0) - new Date(a.pubdate||0));
+  document.getElementById('resultsCount').textContent = `${res.length} بحث علمي`;
+  list.innerHTML = res.map(r => {
+    const isNew     = r.pubdate && (Date.now()-new Date(r.pubdate)) < 14*24*3600*1000;
+    const isReview  = r.articleType.some(t => /review/i.test(t));
+    const isCase    = r.articleType.some(t => /case/i.test(t));
+    const typeLabel = isReview ? 'مراجعة علمية' : isCase ? 'تقرير حالة' : 'بحث أصلي';
+    const jShort    = r.journal.length > 40 ? r.journal.slice(0,40)+'…' : r.journal;
+    const pmUrl     = `https://pubmed.ncbi.nlm.nih.gov/${r.pmid}/`;
+    const schUrl    = `https://scholar.google.com/scholar?q=${encodeURIComponent(r.title)}`;
+    return `
+    <div class="article-card">
+      <div class="article-meta">
+        ${isNew ? '<span class="badge b-new">● جديد</span>' : ''}
+        <span class="badge b-type">${typeLabel}</span>
+        ${r.journal ? `<span class="badge b-journal">${jShort}</span>` : ''}
+        ${r.year    ? `<span class="badge b-year">${r.year}</span>` : ''}
+        ${r.openAccess ? '<span class="badge b-oa">مفتوح الوصول</span>' : ''}
+      </div>
+      <div class="article-title" onclick="window.open('${pmUrl}','_blank')">${r.title}</div>
+      ${r.authors ? `<div class="article-authors"><i class="ti ti-users" style="font-size:12px;vertical-align:-1px" aria-hidden="true"></i> ${r.authors}</div>` : ''}
+      <div class="article-footer">
+        <div class="article-actions">
+          <button class="btn-sm green" onclick="window.open('${pmUrl}','_blank')">
+            <i class="ti ti-external-link" style="font-size:12px" aria-hidden="true"></i> PubMed
+          </button>
+          <button class="btn-sm" onclick="window.open('${schUrl}','_blank')">
+            <i class="ti ti-book" style="font-size:12px" aria-hidden="true"></i> Google Scholar
+          </button>
+          <button class="btn-sm" onclick="copyPmid('${r.pmid}')">
+            <i class="ti ti-copy" style="font-size:12px" aria-hidden="true"></i> نسخ PMID
+          </button>
+        </div>
+        <span style="font-size:11px;color:#bbb;">PMID: ${r.pmid}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function copyPmid(pmid) {
+  navigator.clipboard.writeText(pmid).then(()=>{ alert('تم نسخ PMID: ' + pmid); });
+}
+
+function setStatus(msg, loading, live) {
+  document.getElementById('statusText').textContent = msg;
+  document.getElementById('spinner').style.display  = loading ? 'inline-block' : 'none';
+  const dot = document.getElementById('statusDot');
+  const ld  = document.getElementById('liveDot');
+  const ll  = document.getElementById('liveLabel');
+  if (live) {
+    dot.classList.add('pulse'); ld.classList.add('pulse'); ll.textContent = 'نشط';
+  } else {
+    dot.classList.remove('pulse'); ld.classList.remove('pulse'); ll.textContent = 'جاهز';
+  }
+}
+
+function toggleAuto() {
+  const btn = document.getElementById('autoBtn');
+  if (autoInterval) {
+    clearInterval(autoInterval); clearInterval(autoTimer);
+    autoInterval = autoTimer = null;
+    btn.classList.remove('active');
+    document.getElementById('timerPill').textContent = 'إيقاف';
+    setStatus('التحديث التلقائي متوقف', false, false);
+  } else {
+    const SEC = 300;
+    autoSec = SEC;
+    btn.classList.add('active');
+    doSearch();
+    autoInterval = setInterval(() => { autoSec = SEC; doSearch(); }, SEC * 1000);
+    autoTimer    = setInterval(() => {
+      autoSec--;
+      document.getElementById('timerPill').textContent = autoSec > 0 ? `${autoSec}ث` : '…';
+    }, 1000);
+    setStatus('تحديث تلقائي نشط — كل 5 دقائق', false, true);
+  }
+}
+
+document.getElementById('searchInput').addEventListener('keydown', e => { if (e.key==='Enter') doSearch(); });
+window.addEventListener('DOMContentLoaded', doSearch);
+</script>
+</body>
+</html>
