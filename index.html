@@ -304,17 +304,17 @@
     </div>
     <div class="filters-row">
       <span class="filter-label" id="filter-label">تصفية:</span>
-      <button class="ftag active" data-key="influenza"   data-ar="أنفلونزا"              data-en="Influenza"          onclick="toggleFilter(this,'influenza')">أنفلونزا</button>
-      <button class="ftag active" data-key="rabies"      data-ar="داء الكلب"             data-en="Rabies"             onclick="toggleFilter(this,'rabies')">داء الكلب</button>
-      <button class="ftag active" data-key="FMD"         data-ar="الحمى القلاعية"        data-en="FMD"                onclick="toggleFilter(this,'FMD')">الحمى القلاعية</button>
-      <button class="ftag active" data-key="coronavirus" data-ar="كورونا حيوانات"        data-en="Coronavirus"        onclick="toggleFilter(this,'coronavirus')">كورونا حيوانات</button>
-      <button class="ftag active" data-key="parvovirus"  data-ar="بارفوفيروس"            data-en="Parvovirus"         onclick="toggleFilter(this,'parvovirus')">بارفوفيروس</button>
-      <button class="ftag"        data-key="herpesvirus" data-ar="هيربس فيروس"           data-en="Herpesvirus"        onclick="toggleFilter(this,'herpesvirus')">هيربس فيروس</button>
-      <button class="ftag"        data-key="Newcastle"   data-ar="نيوكاسل"               data-en="Newcastle"          onclick="toggleFilter(this,'Newcastle')">نيوكاسل</button>
-      <button class="ftag"        data-key="BVD"         data-ar="BVD"                   data-en="BVD"                onclick="toggleFilter(this,'BVD')">BVD</button>
-      <button class="ftag"        data-key="ASF"         data-ar="حمى الخنازير الأفريقية" data-en="African Swine Fever" onclick="toggleFilter(this,'ASF')">حمى الخنازير الأفريقية</button>
-      <button class="ftag"        data-key="avian"       data-ar="إنفلونزا الطيور"       data-en="Avian Influenza"    onclick="toggleFilter(this,'avian')">إنفلونزا الطيور</button>
-      <button class="ftag"        data-key="distemper"   data-ar="كلبة الحيوانات"        data-en="Distemper"          onclick="toggleFilter(this,'distemper')">كلبة الحيوانات</button>
+      <button class="ftag active" data-key="influenza"   onclick="toggleFilter(this,'influenza')"><span data-ar="أنفلونزا"               data-en="Influenza">أنفلونزا</span></button>
+      <button class="ftag active" data-key="rabies"      onclick="toggleFilter(this,'rabies')"><span data-ar="داء الكلب"              data-en="Rabies">داء الكلب</span></button>
+      <button class="ftag active" data-key="FMD"         onclick="toggleFilter(this,'FMD')"><span data-ar="الحمى القلاعية"         data-en="FMD">الحمى القلاعية</span></button>
+      <button class="ftag active" data-key="coronavirus" onclick="toggleFilter(this,'coronavirus')"><span data-ar="كورونا حيوانات"         data-en="Coronavirus">كورونا حيوانات</span></button>
+      <button class="ftag active" data-key="parvovirus"  onclick="toggleFilter(this,'parvovirus')"><span data-ar="بارفوفيروس"             data-en="Parvovirus">بارفوفيروس</span></button>
+      <button class="ftag"        data-key="herpesvirus" onclick="toggleFilter(this,'herpesvirus')"><span data-ar="هيربس فيروس"            data-en="Herpesvirus">هيربس فيروس</span></button>
+      <button class="ftag"        data-key="Newcastle"   onclick="toggleFilter(this,'Newcastle')"><span data-ar="نيوكاسل"                data-en="Newcastle">نيوكاسل</span></button>
+      <button class="ftag"        data-key="BVD"         onclick="toggleFilter(this,'BVD')"><span data-ar="BVD"                    data-en="BVD">BVD</span></button>
+      <button class="ftag"        data-key="ASF"         onclick="toggleFilter(this,'ASF')"><span data-ar="حمى الخنازير الأفريقية"  data-en="African Swine Fever">حمى الخنازير الأفريقية</span></button>
+      <button class="ftag"        data-key="avian"       onclick="toggleFilter(this,'avian')"><span data-ar="إنفلونزا الطيور"        data-en="Avian Influenza">إنفلونزا الطيور</span></button>
+      <button class="ftag"        data-key="distemper"   onclick="toggleFilter(this,'distemper')"><span data-ar="كلبة الحيوانات"         data-en="Distemper">كلبة الحيوانات</span></button>
     </div>
   </div>
 
@@ -474,8 +474,8 @@ function applyLang() {
   document.getElementById('statusText').textContent     = statusMap[lastStatusState] || t.statusReady;
   document.getElementById('empty-msg').textContent      = t.emptyStart;
   document.getElementById('footer-text').textContent    = t.footer;
-  document.querySelectorAll('.ftag').forEach(btn => {
-    btn.textContent = btn.getAttribute('data-' + lang);
+  document.querySelectorAll('.ftag span[data-ar]').forEach(span => {
+    span.textContent = span.getAttribute('data-' + lang);
   });
   document.querySelectorAll('#yearFilter option').forEach(opt => {
     if (opt.dataset.ar) opt.textContent = opt.getAttribute('data-' + lang);
