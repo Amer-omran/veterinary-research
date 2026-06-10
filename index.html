@@ -150,7 +150,11 @@
     color: #555;
     background: #fafafa;
     transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
   }
+  .ftag i { font-size: 13px; flex-shrink: 0; }
   .ftag.active { background: #E1F5EE; border-color: #5DCAA5; color: #085041; font-weight: 500; }
   .ftag:hover { border-color: #aaa; }
   .status-bar {
@@ -304,31 +308,31 @@
     </div>
     <div class="filters-row">
       <span class="filter-label" id="filter-label">تصفية:</span>
-      <button class="ftag active" data-key="influenza"   onclick="toggleFilter(this,'influenza')"><span data-ar="أنفلونزا"               data-en="Influenza">أنفلونزا</span></button>
-      <button class="ftag active" data-key="rabies"      onclick="toggleFilter(this,'rabies')"><span data-ar="داء الكلب"              data-en="Rabies">داء الكلب</span></button>
-      <button class="ftag active" data-key="FMD"         onclick="toggleFilter(this,'FMD')"><span data-ar="الحمى القلاعية"         data-en="FMD">الحمى القلاعية</span></button>
-      <button class="ftag active" data-key="coronavirus" onclick="toggleFilter(this,'coronavirus')"><span data-ar="كورونا حيوانات"         data-en="Coronavirus">كورونا حيوانات</span></button>
-      <button class="ftag active" data-key="parvovirus"  onclick="toggleFilter(this,'parvovirus')"><span data-ar="بارفوفيروس"             data-en="Parvovirus">بارفوفيروس</span></button>
-      <button class="ftag"        data-key="herpesvirus" onclick="toggleFilter(this,'herpesvirus')"><span data-ar="هيربس فيروس"            data-en="Herpesvirus">هيربس فيروس</span></button>
-      <button class="ftag"        data-key="Newcastle"   onclick="toggleFilter(this,'Newcastle')"><span data-ar="نيوكاسل"                data-en="Newcastle">نيوكاسل</span></button>
-      <button class="ftag"        data-key="BVD"         onclick="toggleFilter(this,'BVD')"><span data-ar="BVD"                    data-en="BVD">BVD</span></button>
-      <button class="ftag"        data-key="ASF"         onclick="toggleFilter(this,'ASF')"><span data-ar="حمى الخنازير الأفريقية"  data-en="African Swine Fever">حمى الخنازير الأفريقية</span></button>
-      <button class="ftag"        data-key="avian"       onclick="toggleFilter(this,'avian')"><span data-ar="إنفلونزا الطيور"        data-en="Avian Influenza">إنفلونزا الطيور</span></button>
-      <button class="ftag"        data-key="distemper"   onclick="toggleFilter(this,'distemper')"><span data-ar="كلبة الحيوانات"         data-en="Distemper">كلبة الحيوانات</span></button>
+      <button class="ftag active" data-key="influenza"   onclick="toggleFilter(this,'influenza')"><i class="ti ti-virus" aria-hidden="true"></i><span data-ar="أنفلونزا"               data-en="Influenza">أنفلونزا</span></button>
+      <button class="ftag active" data-key="rabies"      onclick="toggleFilter(this,'rabies')"><i class="ti ti-alert-circle" aria-hidden="true"></i><span data-ar="داء الكلب"              data-en="Rabies">داء الكلب</span></button>
+      <button class="ftag active" data-key="FMD"         onclick="toggleFilter(this,'FMD')"><i class="ti ti-mouth" aria-hidden="true"></i><span data-ar="الحمى القلاعية"         data-en="FMD">الحمى القلاعية</span></button>
+      <button class="ftag active" data-key="coronavirus" onclick="toggleFilter(this,'coronavirus')"><i class="ti ti-sphere" aria-hidden="true"></i><span data-ar="كورونا حيوانات"         data-en="Coronavirus">كورونا حيوانات</span></button>
+      <button class="ftag active" data-key="parvovirus"  onclick="toggleFilter(this,'parvovirus')"><i class="ti ti-hexagon" aria-hidden="true"></i><span data-ar="بارفوفيروس"             data-en="Parvovirus">بارفوفيروس</span></button>
+      <button class="ftag"        data-key="herpesvirus" onclick="toggleFilter(this,'herpesvirus')"><i class="ti ti-shape-3" aria-hidden="true"></i><span data-ar="هيربس فيروس"            data-en="Herpesvirus">هيربس فيروس</span></button>
+      <button class="ftag"        data-key="Newcastle"   onclick="toggleFilter(this,'Newcastle')"><i class="ti ti-feather" aria-hidden="true"></i><span data-ar="نيوكاسل"                data-en="Newcastle">نيوكاسل</span></button>
+      <button class="ftag"        data-key="BVD"         onclick="toggleFilter(this,'BVD')"><i class="ti ti-cow" aria-hidden="true"></i><span data-ar="BVD"                    data-en="BVD">BVD</span></button>
+      <button class="ftag"        data-key="ASF"         onclick="toggleFilter(this,'ASF')"><i class="ti ti-pig" aria-hidden="true"></i><span data-ar="حمى الخنازير الأفريقية"  data-en="African Swine Fever">حمى الخنازير الأفريقية</span></button>
+      <button class="ftag"        data-key="avian"       onclick="toggleFilter(this,'avian')"><i class="ti ti-bird" aria-hidden="true"></i><span data-ar="إنفلونزا الطيور"        data-en="Avian Influenza">إنفلونزا الطيور</span></button>
+      <button class="ftag"        data-key="distemper"   onclick="toggleFilter(this,'distemper')"><i class="ti ti-paw" aria-hidden="true"></i><span data-ar="كلبة الحيوانات"         data-en="Distemper">كلبة الحيوانات</span></button>
     </div>
 
     <div class="filters-row">
       <span class="filter-label" id="journal-label">مجلات:</span>
-      <button class="ftag"        data-key="vet-micro"   onclick="toggleFilter(this,'vet-micro')"><span data-ar="الفيروسات البيطرية"        data-en="Vet Microbiology">الفيروسات البيطرية</span></button>
-      <button class="ftag"        data-key="j-virology" onclick="toggleFilter(this,'j-virology')"><span data-ar="مجلة الفيروسات"        data-en="J. Virology">مجلة الفيروسات</span></button>
-      <button class="ftag"        data-key="virus-res"  onclick="toggleFilter(this,'virus-res')"><span data-ar="أبحاث الفيروسات"      data-en="Virus Research">أبحاث الفيروسات</span></button>
-      <button class="ftag"        data-key="vet-virol"  onclick="toggleFilter(this,'vet-virol')"><span data-ar="فيروسات بيطرية"       data-en="Vet Virology">فيروسات بيطرية</span></button>
-      <button class="ftag"        data-key="emerg-inf"  onclick="toggleFilter(this,'emerg-inf')"><span data-ar="الأمراض الناشئة"       data-en="Emerg. Inf. Dis.">الأمراض الناشئة</span></button>
-      <button class="ftag"        data-key="plos-path"  onclick="toggleFilter(this,'plos-path')"><span data-ar="بلوس باثوجينز"       data-en="PLoS Pathogens">بلوس باثوجينز</span></button>
-      <button class="ftag"        data-key="virol-j"   onclick="toggleFilter(this,'virol-j')"><span data-ar="مجلة الفيروسات العامة"  data-en="Virology Journal">مجلة الفيروسات العامة</span></button>
-      <button class="ftag"        data-key="appl-env"   onclick="toggleFilter(this,'appl-env')"><span data-ar="التطبيقات البيئية"     data-en="Appl. Env. Micro.">التطبيقات البيئية</span></button>
-      <button class="ftag"        data-key="vet-j"      onclick="toggleFilter(this,'vet-j')"><span data-ar="المجلة البيطرية"       data-en="Vet Journal">المجلة البيطرية</span></button>
-      <button class="ftag"        data-key="vet-res"    onclick="toggleFilter(this,'vet-res')"><span data-ar="أبحاث بيطرية"        data-en="Vet Research">أبحاث بيطرية</span></button>
+      <button class="ftag"        data-key="vet-micro"   onclick="toggleFilter(this,'vet-micro')"><i class="ti ti-microscope" aria-hidden="true"></i><span data-ar="الفيروسات البيطرية"        data-en="Vet Microbiology">الفيروسات البيطرية</span></button>
+      <button class="ftag"        data-key="j-virology" onclick="toggleFilter(this,'j-virology')"><i class="ti ti-flask" aria-hidden="true"></i><span data-ar="مجلة الفيروسات"        data-en="J. Virology">مجلة الفيروسات</span></button>
+      <button class="ftag"        data-key="virus-res"  onclick="toggleFilter(this,'virus-res')"><i class="ti ti-test-pipe" aria-hidden="true"></i><span data-ar="أبحاث الفيروسات"      data-en="Virus Research">أبحاث الفيروسات</span></button>
+      <button class="ftag"        data-key="vet-virol"  onclick="toggleFilter(this,'vet-virol')"><i class="ti ti-dna-2" aria-hidden="true"></i><span data-ar="فيروسات بيطرية"       data-en="Vet Virology">فيروسات بيطرية</span></button>
+      <button class="ftag"        data-key="emerg-inf"  onclick="toggleFilter(this,'emerg-inf')"><i class="ti ti-medical-cross" aria-hidden="true"></i><span data-ar="الأمراض الناشئة"       data-en="Emerg. Inf. Dis.">الأمراض الناشئة</span></button>
+      <button class="ftag"        data-key="plos-path"  onclick="toggleFilter(this,'plos-path')"><i class="ti ti-disease-2" aria-hidden="true"></i><span data-ar="بلوس باثوجينز"       data-en="PLoS Pathogens">بلوس باثوجينز</span></button>
+      <button class="ftag"        data-key="virol-j"   onclick="toggleFilter(this,'virol-j')"><i class="ti ti-book-2" aria-hidden="true"></i><span data-ar="مجلة الفيروسات العامة"  data-en="Virology Journal">مجلة الفيروسات العامة</span></button>
+      <button class="ftag"        data-key="appl-env"   onclick="toggleFilter(this,'appl-env')"><i class="ti ti-leaf" aria-hidden="true"></i><span data-ar="التطبيقات البيئية"     data-en="Appl. Env. Micro.">التطبيقات البيئية</span></button>
+      <button class="ftag"        data-key="vet-j"      onclick="toggleFilter(this,'vet-j')"><i class="ti ti-stethoscope" aria-hidden="true"></i><span data-ar="المجلة البيطرية"       data-en="Vet Journal">المجلة البيطرية</span></button>
+      <button class="ftag"        data-key="vet-res"    onclick="toggleFilter(this,'vet-res')"><i class="ti ti-clipboard-list" aria-hidden="true"></i><span data-ar="أبحاث بيطرية"        data-en="Vet Research">أبحاث بيطرية</span></button>
     </div>
   </div>
 
