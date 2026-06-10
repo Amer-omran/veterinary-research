@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -365,7 +365,7 @@
 
 <script>
 const PUBMED = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/';
-let lang = 'ar';
+let lang = 'en';
 let autoInterval = null, autoTimer = null, autoSec = 0;
 let currentResults = [];
 let activeFilters = ['influenza','rabies','FMD','coronavirus','parvovirus'];
@@ -687,7 +687,7 @@ function toggleAuto() {
 }
 
 document.getElementById('searchInput').addEventListener('keydown', e => { if (e.key==='Enter') doSearch(); });
-window.addEventListener('DOMContentLoaded', doSearch);
+window.addEventListener('DOMContentLoaded', () => { applyLang(); doSearch(); });
 </script>
 </body>
 </html>
