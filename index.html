@@ -316,6 +316,20 @@
       <button class="ftag"        data-key="avian"       onclick="toggleFilter(this,'avian')"><span data-ar="إنفلونزا الطيور"        data-en="Avian Influenza">إنفلونزا الطيور</span></button>
       <button class="ftag"        data-key="distemper"   onclick="toggleFilter(this,'distemper')"><span data-ar="كلبة الحيوانات"         data-en="Distemper">كلبة الحيوانات</span></button>
     </div>
+
+    <div class="filters-row">
+      <span class="filter-label" id="journal-label">مجلات:</span>
+      <button class="ftag"        data-key="vet-micro"   onclick="toggleFilter(this,'vet-micro')"><span data-ar="Vet Microbiology"  data-en="Vet Microbiology">Vet Microbiology</span></button>
+      <button class="ftag"        data-key="j-virology" onclick="toggleFilter(this,'j-virology')"><span data-ar="J. Virology"        data-en="J. Virology">J. Virology</span></button>
+      <button class="ftag"        data-key="virus-res"  onclick="toggleFilter(this,'virus-res')"><span data-ar="Virus Research"    data-en="Virus Research">Virus Research</span></button>
+      <button class="ftag"        data-key="vet-virol"  onclick="toggleFilter(this,'vet-virol')"><span data-ar="Vet Virology"     data-en="Vet Virology">Vet Virology</span></button>
+      <button class="ftag"        data-key="emerg-inf"  onclick="toggleFilter(this,'emerg-inf')"><span data-ar="Emerg. Inf. Dis."   data-en="Emerg. Inf. Dis.">Emerg. Inf. Dis.</span></button>
+      <button class="ftag"        data-key="plos-path"  onclick="toggleFilter(this,'plos-path')"><span data-ar="PLoS Pathogens"    data-en="PLoS Pathogens">PLoS Pathogens</span></button>
+      <button class="ftag"        data-key="virol-j"   onclick="toggleFilter(this,'virol-j')"><span data-ar="Virology Journal"   data-en="Virology Journal">Virology Journal</span></button>
+      <button class="ftag"        data-key="appl-env"   onclick="toggleFilter(this,'appl-env')"><span data-ar="Appl. Env. Micro."   data-en="Appl. Env. Micro.">Appl. Env. Micro.</span></button>
+      <button class="ftag"        data-key="vet-j"      onclick="toggleFilter(this,'vet-j')"><span data-ar="Vet Journal"        data-en="Vet Journal">Vet Journal</span></button>
+      <button class="ftag"        data-key="vet-res"    onclick="toggleFilter(this,'vet-res')"><span data-ar="Vet Research"      data-en="Vet Research">Vet Research</span></button>
+    </div>
   </div>
 
   <div class="status-bar">
@@ -369,6 +383,7 @@ const T = {
     autoBtn:      'تلقائي',
     autoOff:      'إيقاف',
     filterLabel:  'تصفية:',
+    journalLabel: 'مجلات:',
     placeholder:  'ابحث: influenza، rabies، FMD، coronavirus...',
     searching:    'جارٍ البحث في PubMed…',
     noResults:    'لا توجد نتائج لهذا البحث',
@@ -409,6 +424,7 @@ const T = {
     autoBtn:      'Auto',
     autoOff:      'Off',
     filterLabel:  'Filter:',
+    journalLabel: 'Journals:',
     placeholder:  'Search: influenza, rabies, FMD, coronavirus...',
     searching:    'Searching PubMed…',
     noResults:    'No results found for this search',
@@ -448,7 +464,17 @@ const topics = {
   BVD:         'bovine viral diarrhea virus',
   ASF:         'African swine fever virus',
   avian:       'avian influenza H5N1 H5N8 poultry',
-  distemper:   'canine distemper virus feline'
+  distemper:   'canine distemper virus feline',
+  'vet-micro':  'Veterinary Microbiology',
+  'j-virology': 'Journal of Virology',
+  'virus-res':  'Virus Research',
+  'vet-virol':  'Veterinary Virology',
+  'emerg-inf':  'Emerging Infectious Diseases',
+  'plos-path':  'PLoS Pathogens',
+  'virol-j':    'Virology Journal',
+  'appl-env':   'Applied and Environmental Microbiology',
+  'vet-j':      'Veterinary Journal',
+  'vet-res':    'Veterinary Research'
 };
 
 function applyLang() {
@@ -467,6 +493,7 @@ function applyLang() {
   document.getElementById('btn-search-label').textContent = t.searchBtn;
   document.getElementById('btn-auto-label').textContent = t.autoBtn;
   document.getElementById('filter-label').textContent   = t.filterLabel;
+  document.getElementById('journal-label').textContent  = t.journalLabel;
   document.getElementById('searchInput').placeholder    = t.placeholder;
   document.getElementById('searchInput').style.direction = isAr ? 'rtl' : 'ltr';
   document.getElementById('timerPill').textContent      = autoInterval ? document.getElementById('timerPill').textContent : t.autoOff;
