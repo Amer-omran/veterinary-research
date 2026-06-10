@@ -281,7 +281,7 @@
 
   <div class="search-box">
     <div class="search-row">
-      <input type="text" id="searchInput" placeholder="ابحث: influenza، rabies، FMD..." value="veterinary virology" />
+      <input type="text" id="searchInput" placeholder="ابحث: influenza، rabies، FMD..." value="veterinary virology" data-ar="فيروسات بيطرية" data-en="veterinary virology" />
       <select id="yearFilter">
         <option value="all" data-ar="كل السنوات" data-en="All Years">كل السنوات</option>
         <option value="2026" selected>2026</option>
@@ -486,6 +486,7 @@ function applyLang() {
   const isAr = lang === 'ar';
   document.documentElement.lang = lang;
   document.documentElement.dir  = isAr ? 'rtl' : 'ltr';
+  document.title                                        = t.title;
   document.getElementById('tb-title').textContent       = t.title;
   document.getElementById('tb-sub').textContent         = t.sub;
   document.getElementById('langBtnLabel').textContent   = t.langBtn;
@@ -500,6 +501,7 @@ function applyLang() {
   document.getElementById('journal-label').textContent  = t.journalLabel;
   document.getElementById('searchInput').placeholder    = t.placeholder;
   document.getElementById('searchInput').style.direction = isAr ? 'rtl' : 'ltr';
+  document.getElementById('searchInput').value           = document.getElementById('searchInput').getAttribute('data-' + lang);
   document.getElementById('timerPill').textContent      = autoInterval ? document.getElementById('timerPill').textContent : t.autoOff;
   const statusMap = { ready: t.statusReady, auto: t.autoActive, stopped: t.autoStopped };
   document.getElementById('statusText').textContent     = statusMap[lastStatusState] || t.statusReady;
