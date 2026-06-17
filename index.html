@@ -305,6 +305,12 @@
         <span id="btn-auto-label">تلقائي</span>
         <span class="timer-pill" id="timerPill">إيقاف</span>
       </button>
+      <select id="intervalSel" onchange="restartAuto()">
+        <option value="300"   data-ar="كل 5 دقائق"  data-en="Every 5 min">كل 5 دقائق</option>
+        <option value="600"   data-ar="كل 10 دقائق" data-en="Every 10 min">كل 10 دقائق</option>
+        <option value="1800"  data-ar="كل 30 دقيقة" data-en="Every 30 min">كل 30 دقيقة</option>
+        <option value="3600"  data-ar="كل ساعة"     data-en="Every hour">كل ساعة</option>
+      </select>
     </div>
     <div class="filters-row">
       <span class="filter-label" id="filter-label">تصفية:</span>
@@ -513,7 +519,7 @@ function applyLang() {
   document.querySelectorAll('#yearFilter option').forEach(opt => {
     if (opt.dataset.ar) opt.textContent = opt.getAttribute('data-' + lang);
   });
-  document.querySelectorAll('#typeFilter option, #sortSel option').forEach(opt => {
+  document.querySelectorAll('#typeFilter option, #sortSel option, #intervalSel option').forEach(opt => {
     if (opt.dataset.ar) opt.textContent = opt.getAttribute('data-' + lang);
   });
   if (currentResults.length > 0) renderResults();
@@ -662,32 +668,42 @@ function setStatus(msg, loading, live) {
   }
 }
 
-function toggleAuto() {
+function startAuto() {
   const btn = document.getElementById('autoBtn');
-  if (autoInterval) {
-    clearInterval(autoInterval); clearInterval(autoTimer);
-    autoInterval = autoTimer = null;
-    btn.classList.remove('active');
-    document.getElementById('timerPill').textContent = T[lang].autoOff;
-    lastStatusState = 'stopped';
-    setStatus(T[lang].autoStopped, false, false);
-  } else {
-    const SEC = 300;
-    autoSec = SEC;
-    btn.classList.add('active');
-    lastStatusState = 'auto';
-    doSearch();
-    autoInterval = setInterval(() => { autoSec = SEC; doSearch(); }, SEC * 1000);
-    autoTimer    = setInterval(() => {
-      autoSec--;
-      document.getElementById('timerPill').textContent = autoSec > 0 ? `${autoSec}s` : '…';
-    }, 1000);
-    setStatus(T[lang].autoActive, false, true);
-  }
+  const SEC = parseInt(document.getElementById('intervalSel').value, 10) || 300;
+  autoSec = SEC;
+  btn.classList.add('active');
+  lastStatusState = 'auto';
+  doSearch();
+  autoInterval = setInterval(() => { autoSec = SEC; doSearch(); }, SEC * 1000);
+  autoTimer    = setInterval(() => {
+    autoSec--;
+    const m = Math.floor(autoSec / 60), s = autoSec % 60;
+    document.getElementById('timerPill').textContent = autoSec > 0 ? `${m}:${String(s).padStart(2,'0')}` : '…';
+  }, 1000);
+  setStatus(T[lang].autoActive, false, true);
+}
+
+function stopAuto() {
+  clearInterval(autoInterval); clearInterval(autoTimer);
+  autoInterval = autoTimer = null;
+  document.getElementById('autoBtn').classList.remove('active');
+  document.getElementById('timerPill').textContent = T[lang].autoOff;
+  lastStatusState = 'stopped';
+  setStatus(T[lang].autoStopped, false, false);
+}
+
+function toggleAuto() {
+  if (autoInterval) stopAuto();
+  else startAuto();
+}
+
+function restartAuto() {
+  if (autoInterval) { stopAuto(); startAuto(); }
 }
 
 document.getElementById('searchInput').addEventListener('keydown', e => { if (e.key==='Enter') doSearch(); });
-window.addEventListener('DOMContentLoaded', () => { applyLang(); doSearch(); });
+window.addEventListener('DOMContentLoaded', () => { applyLang(); startAuto(); });
 </script>
 </body>
 </html>
